@@ -5,17 +5,17 @@ app = FastAPI()
 
 
 @app.get("/")
-async def root():
-    return {'message' : 'Hello, Bemo'}
+def root():
+    return {'message' : 'Hello, Bemo'} # Whatever we are returing here is what will be sent to the user 
 
 
 @app.get("/posts")
-async def get_posts():
-    return {'posts' : 'This to test postman and the url is working'}
+def get_posts():
+    return {'posts' : 'This to test postman and the url is working'} # This is what client recives when the endpoint got hit ... 
 
 
-@app.post("/createPosts")
-async  def create_posts(payload : dict = Body(...)):
+@app.post("/createposts")
+def create_posts(payload: dict = Body(...)):
     print(payload)
-    return {"message" : f"title: {payload['title']} content: {payload['content']}"}
+    return {'New Post': f"title: {payload['title']} content: {payload['content']}"}
 
