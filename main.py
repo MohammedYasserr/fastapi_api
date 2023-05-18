@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.params import Body
 from pydantic import BaseModel
 from typing import Optional
+from random import randrange
 
 app = FastAPI() 
 
@@ -15,6 +16,13 @@ class Post(BaseModel):
     rating : Optional[int] = None
 
 
+# Setting up a hard-coded variable to store our posts 
+
+my_posts = [
+            {"title" :"This is the title of post 1", "content" :"this is content of post 1" , "id" : 1}, 
+            {"title":"fav foods", "content" : "Fired fish is my fav food", "id": 2}
+] 
+
 @app.get("/")
 def root():
     return {'message' : 'Hello, Bemo'} # Whatever we are returing here is what will be sent to the user 
@@ -22,11 +30,13 @@ def root():
 
 @app.get("/posts")
 def get_posts():
-    return {'posts' : 'This to test postman and the url is working'} # This is what client recives when the endpoint got hit ... 
+    return {"data" : my_posts} # This is what client recives when the endpoint got hit ... 
 
 
 @app.post("/createposts")
 def create_posts(post : Post):
-    print(post.rating)
-    return {"Data" : "New Post"}
+    post_dict = post.dict()
+    post_dict['id'] = randrange(0,1000000)
+    my_posts.append(post)
+    return {"Data" : post_dict}
 
