@@ -25,12 +25,12 @@ my_posts = [
 
 @app.get("/")
 def root():
-    return {'message' : 'Hello, Bemo'} # Whatever we are returing here is what will be sent to the user 
+    return {'message' : 'Hello, Bemo'} 
 
 
 @app.get("/posts")
 def get_posts():
-    return {"data" : my_posts} # This is what client recives when the endpoint got hit ... 
+    return {"data" : my_posts}
 
 
 @app.post("/createposts")
