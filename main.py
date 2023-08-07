@@ -8,8 +8,8 @@ from random import randrange
 app = FastAPI() 
 
 
-# constructing a class that defines the schema structure
 
+# constructing a class that defines the schema structure
 class Post(BaseModel):
     title: str 
     content : str
@@ -17,21 +17,24 @@ class Post(BaseModel):
     rating : Optional[int] = None
 
 
-# Setting up a hard-coded variable to store our posts 
+# Setting up a hard-coded variable to store our posts - Fake DB 
+my_posts = [{"title" :"This is the title of post 1", "content" :"this is content of post 1" , "id" : 1},{"title":"fav foods", "content" : "Fired fish is my fav food", "id": 2}] 
 
-my_posts = [
-            {"title" :"This is the title of post 1", "content" :"this is content of post 1" , "id" : 1}, 
-            {"title":"fav foods", "content" : "Fired fish is my fav food", "id": 2}
-] 
+def find_post(id):
+    for p in my_posts:
+        if p["id"] == id:
+            return p
 
+# Get enpoint..... 
 @app.get("/")
 def root():
-    return {'message' : 'Hello, Bemo'} 
+    return {'message' : 'Hello, world'} 
 
 
 @app.get("/posts")
 def get_posts():
     return {"data" : my_posts}
+
 
 
 @app.post("/createposts")
@@ -40,4 +43,22 @@ def create_posts(post : Post):
     post_dict['id'] = randrange(0,1000000)
     my_posts.append(post)
     return {"Data" : post_dict}
+
+
+# getting and retring the lastes post
+
+@app.get('/posts/latest')
+def get_latest_post():
+    post = my_posts[len(my_posts) - 1]
+    return {"details": post}
+
+
+
+# Getting a post given a specific id - This {id} is going to be send dynamically by the user.
+# {id} is called a path parameter
+@app.get('/posts/{id}')
+def get_posts(id:int):
+    post =find_post(int(id))
+    return {"post detail" : post}
+
 
