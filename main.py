@@ -37,7 +37,7 @@ def get_posts():
 
 
 
-@app.post("/createposts")
+@app.post("/createposts" , status_code=status.HTTP_201_CREATED)
 def create_posts(post : Post):
     post_dict = post.dict()
     post_dict['id'] = randrange(0,1000000)
